@@ -88,6 +88,7 @@ RUN mkdir -p /php && \
     --enable-sockets \
     --enable-soap \
     --with-openssl \
+    --without-pear \
     --with-openssl-dir=/usr/include/openssl \
     --with-curl=/usr/include/curl \
     --with-mcrypt=/usr/local/include \
@@ -99,6 +100,11 @@ RUN mkdir -p /php && \
     mkdir -p /etc/php.d && \
     rm -rf /php
 
+RUN wget https://pear.php.net/go-pear.phar && \
+	mv go-pear.phar go-pear.php && \
+	php go-pear.php && \
+	rm go-pear.php
+
 WORKDIR /app
 
 RUN pecl install memcached && \
@@ -108,9 +114,11 @@ RUN sed -i -e "s/expose_php\ =\ On/expose_php\ =\ Off/g" /etc/php.ini \
     && sed -i -e "s/\;error_log\ =\ php_errors\.log/error_log\ =\ \/var\/log\/php_errors\.log/g" /etc/php.ini \
     && sed -i -e "s/\;date\.timezone =/date\.timezone = Europe\/London/g" /etc/php.ini
 
-RUN sed -i -e "s/#LoadModule rewrite_module/LoadModule rewrite_module/g" /usr/local/apache2/conf/httpd.conf && \
+RUN sed -i -e "s/#Include conf\/extra\/httpd-vhosts\.conf/Include conf\/extra\/app.vhost\.conf/g" /usr/local/apache2/conf/httpd.conf \
+    sed -i -e "s/#LoadModule rewrite_module/LoadModule rewrite_module/g" /usr/local/apache2/conf/httpd.conf && \
     sed -i -e "s/#LoadModule ssl_module/LoadModule ssl_module/g" /usr/local/apache2/conf/httpd.conf && \
-    rm -f /usr/local/apache2/conf/extra/httpd-vhosts.conf
+    rm -f /usr/local/apache2/conf/extra/httpd-vhosts.conf && \
+    ln -s /usr/local/apache2/conf/extra/app.vhost.conf /vhost.conf
 
 RUN wget https://getcomposer.org/installer && \
 	mv installer composer-installer.php && \
