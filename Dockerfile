@@ -114,7 +114,7 @@ RUN sed -i -e "s/expose_php\ =\ On/expose_php\ =\ Off/g" /etc/php.ini \
     && sed -i -e "s/\;error_log\ =\ php_errors\.log/error_log\ =\ \/var\/log\/php_errors\.log/g" /etc/php.ini \
     && sed -i -e "s/\;date\.timezone =/date\.timezone = Europe\/London/g" /etc/php.ini
 
-RUN sed -i -e "s/#Include conf\/extra\/httpd-vhosts\.conf/Include conf\/extra\/app.vhost\.conf/g" /usr/local/apache2/conf/httpd.conf \
+RUN sed -i -e "s/#Include conf\/extra\/httpd-vhosts\.conf/Include conf\/extra\/app.vhost\.conf/g" /usr/local/apache2/conf/httpd.conf && \
     sed -i -e "s/#LoadModule rewrite_module/LoadModule rewrite_module/g" /usr/local/apache2/conf/httpd.conf && \
     sed -i -e "s/#LoadModule ssl_module/LoadModule ssl_module/g" /usr/local/apache2/conf/httpd.conf && \
     rm -f /usr/local/apache2/conf/extra/httpd-vhosts.conf && \
