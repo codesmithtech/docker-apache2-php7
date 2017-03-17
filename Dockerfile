@@ -21,7 +21,9 @@ RUN yum install -y \
     libcurl-devel.x86_64 \
     libiodbc-devel.x86_64 \
     libmemcached-devel.x86_64 \
-    zlib-devel.x86_64
+    zlib-devel.x86_64 \
+    krb5-devel \
+    pam-devel
 
 RUN mkdir /php && \
     cd /php && \
@@ -67,6 +69,19 @@ RUN mkdir /apache && \
     make install && \
     rm -rf /apache
 
+RUN cd /opt && \
+    wget ftp://ftp.cac.washington.edu/imap/c-client.tar.Z && \
+    tar xvzf c-client.tar.Z && \
+    cd imap-2007f && \
+    ln -s /usr/lib64/openssl/engines/ /usr/local/ssl && \
+    ln -s /usr/include/ /usr/local/ssl/include && \
+    make lnp SSLTYPE=unix.nopwd && \
+    mkdir lib && mkdir include && \
+    cp c-client/*.c lib/ && \
+    cp c-client/*.h include/ && \
+    cp c-client/c-client.a lib/libc-client.a
+
+
 RUN mkdir -p /php && \
     cd /php && \
     wget https://github.com/php/php-src/archive/PHP-7.1.2.zip && \
@@ -89,11 +104,14 @@ RUN mkdir -p /php && \
     --enable-soap \
     --with-openssl \
     --without-pear \
+    --with-imap=/opt/imap-2007f \
+    --with-imap-ssl=/opt/imap-2007f \
     --with-openssl-dir=/usr/include/openssl \
     --with-curl=/usr/include/curl \
     --with-mcrypt=/usr/local/include \
     --with-zlib-dir=/usr/include \
-    --with-pdo-mysql=mysqlnd && \
+    --with-pdo-mysql=mysqlnd \
+    --with-mysqli && \
     make && \
     make install && \
     cp /php/src/php.ini-production /etc/php.ini && \
@@ -112,7 +130,8 @@ RUN pecl install memcached && \
 
 RUN sed -i -e "s/expose_php\ =\ On/expose_php\ =\ Off/g" /etc/php.ini \
     && sed -i -e "s/\;error_log\ =\ php_errors\.log/error_log\ =\ \/var\/log\/php_errors\.log/g" /etc/php.ini \
-    && sed -i -e "s/\;date\.timezone =/date\.timezone = Europe\/London/g" /etc/php.ini
+    && sed -i -e "s/\;date\.timezone =/date\.timezone = Europe\/London/g" /etc/php.ini \
+    && sed -i -e "s/display_errors = Off/display_errors = stderr/g" /etc/php.ini
 
 RUN sed -i -e "s/#Include conf\/extra\/httpd-vhosts\.conf/Include conf\/extra\/app.vhost\.conf/g" /usr/local/apache2/conf/httpd.conf && \
     sed -i -e "s/#LoadModule rewrite_module/LoadModule rewrite_module/g" /usr/local/apache2/conf/httpd.conf && \
