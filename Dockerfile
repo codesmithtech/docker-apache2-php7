@@ -75,7 +75,7 @@ RUN cd /opt && \
     cd imap-2007f && \
     ln -s /usr/lib64/openssl/engines/ /usr/local/ssl && \
     ln -s /usr/include/ /usr/local/ssl/include && \
-    make lnp SSLTYPE=unix.nopwd && \
+    make lnp SSLTYPE=unix.nopwd EXTRACFLAGS=-fPIC && \
     mkdir lib && mkdir include && \
     cp c-client/*.c lib/ && \
     cp c-client/*.h include/ && \
