@@ -23,7 +23,9 @@ RUN yum install -y \
     libmemcached-devel.x86_64 \
     zlib-devel.x86_64 \
     krb5-devel \
-    pam-devel
+    pam-devel \
+    gd \
+    gd-devel
 
 RUN mkdir /php && \
     cd /php && \
@@ -102,6 +104,7 @@ RUN mkdir -p /php && \
     --enable-zip \
     --enable-sockets \
     --enable-soap \
+    --with-gd \
     --with-openssl \
     --without-pear \
     --with-imap=/opt/imap-2007f \
