@@ -24,8 +24,8 @@ RUN yum install -y \
     zlib-devel.x86_64 \
     krb5-devel \
     pam-devel \
-    gd \
-    gd-devel
+    gd-devel \
+    libexif-devel
 
 RUN mkdir /php && \
     cd /php && \
@@ -105,6 +105,7 @@ RUN mkdir -p /php && \
     --enable-sockets \
     --enable-soap \
     --with-gd \
+    --with-exif \
     --with-openssl \
     --without-pear \
     --with-imap=/opt/imap-2007f \
