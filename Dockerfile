@@ -104,8 +104,8 @@ RUN mkdir -p /php && \
     --enable-zip \
     --enable-sockets \
     --enable-soap \
+    --enable-exif \
     --with-gd \
-    --with-exif \
     --with-openssl \
     --without-pear \
     --with-imap=/opt/imap-2007f \
@@ -154,7 +154,7 @@ RUN unlink /etc/localtime && \
     ln -s /usr/share/zoneinfo/Europe/London /etc/localtime && \
     ln -s /usr/local/bin/php /usr/bin/php
 
-RUN ln -sf /dev/stdout /var/log/httpd-access.log && ln -sf /dev/stderr /var/log/httpd-error.log
+RUN ln -sf /dev/stdout /var/log/httpd-access.log && ln -sf /dev/stdout /var/log/httpd-error.log
 
 RUN yum remove -y unzip gcc libc-dev make autoconf automake libtool bison wget
 
