@@ -25,7 +25,8 @@ RUN yum install -y \
     krb5-devel \
     pam-devel \
     gd-devel \
-    libexif-devel
+    libexif-devel \
+    libjpeg-devel
 
 RUN mkdir /php && \
     cd /php && \
@@ -106,6 +107,7 @@ RUN mkdir -p /php && \
     --enable-soap \
     --enable-exif \
     --with-gd \
+    --with-jpeg-dir=/usr/lib64 \
     --with-openssl \
     --without-pear \
     --with-imap=/opt/imap-2007f \
