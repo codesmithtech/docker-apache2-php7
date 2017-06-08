@@ -88,8 +88,8 @@ RUN cd /opt && \
 RUN mkdir -p /php && \
     cd /php && \
     wget https://github.com/php/php-src/archive/PHP-7.1.2.zip && \
-    unzip PHP-7.1.2.zip && \
-    mv php-src-PHP-7.1.2 src && \
+    unzip PHP-7.1.5.zip && \
+    mv php-src-PHP-7.1.5 src && \
     cd /php/src && \
     ./buildconf --force && \
     ./configure -C \
