@@ -67,14 +67,16 @@ RUN mkdir /apache && \
     --enable-rewrite \
     --enable-ssl \
     --enable-so \
+    --enable-authz_core \
+    --enable-access_compat \
     --enable-status && \
     make && \
     make install && \
     rm -rf /apache
 
 RUN cd /opt && \
-    wget ftp://ftp.cac.washington.edu/imap/c-client.tar.Z && \
-    tar xvzf c-client.tar.Z && \
+    wget http://ftp.ntua.gr/pub/net/mail/imap/c-client.tar.gz && \
+    tar xvzf c-client.tar.gz && \
     cd imap-2007f && \
     ln -s /usr/lib64/openssl/engines/ /usr/local/ssl && \
     ln -s /usr/include/ /usr/local/ssl/include && \
@@ -87,9 +89,9 @@ RUN cd /opt && \
 
 RUN mkdir -p /php && \
     cd /php && \
-    wget https://github.com/php/php-src/archive/PHP-7.1.2.zip && \
-    unzip PHP-7.1.5.zip && \
-    mv php-src-PHP-7.1.5 src && \
+    wget https://github.com/php/php-src/archive/PHP-7.1.6.zip && \
+    unzip PHP-7.1.6.zip && \
+    mv php-src-PHP-7.1.6 src && \
     cd /php/src && \
     ./buildconf --force && \
     ./configure -C \
