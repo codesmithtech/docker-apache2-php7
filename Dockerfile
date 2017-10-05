@@ -89,9 +89,9 @@ RUN cd /opt && \
 
 RUN mkdir -p /php && \
     cd /php && \
-    wget https://github.com/php/php-src/archive/PHP-7.1.6.zip && \
-    unzip PHP-7.1.6.zip && \
-    mv php-src-PHP-7.1.6 src && \
+    wget https://github.com/php/php-src/archive/PHP-7.1.9.zip && \
+    unzip PHP-7.1.9.zip && \
+    mv php-src-PHP-7.1.9 src && \
     cd /php/src && \
     ./buildconf --force && \
     ./configure -C \
